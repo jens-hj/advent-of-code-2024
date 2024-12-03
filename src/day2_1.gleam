@@ -11,8 +11,8 @@ pub type Option(a) {
 }
 
 pub fn main() {
-  // let path = "inputs/day2.1.test"
-  let path = "inputs/day2.1"
+  // let path = "inputs/day2.test"
+  let path = "inputs/day2"
 
   let result = case simplifile.read(path) {
     Ok(contents) -> handle_contents(contents)

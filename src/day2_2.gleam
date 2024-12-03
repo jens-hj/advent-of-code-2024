@@ -29,8 +29,8 @@ pub type Order {
 const allowed = [1, 2, 3]
 
 pub fn main() {
-  let path = "inputs/day2.1.test"
-  // let path = "inputs/day2.1"
+  let path = "inputs/day2.test"
+  // let path = "inputs/day2"
 
   let result = case simplifile.read(path) {
     Ok(contents) -> handle_contents(contents)
@@ -104,36 +104,36 @@ fn handle_contents(contents: String) -> Option(Int) {
   // Some(result)
 }
 
-pub fn evaluate_safety(line: List(Int)) -> Safety {
-  let evaluate_singular = fn(first: Int, last: Int, order: Order) -> Bool {
-    let check = allowed |> list.contains(first - last)
-    case order {
-      Ascending if last > first && check -> True
-      Descending if last < first && check -> True
-      _ -> False
-    }
-  }
+// pub fn evaluate_safety(line: List(Int)) -> Safety {
+//   let evaluate_singular = fn(first: Int, last: Int, order: Order) -> Bool {
+//     let check = allowed |> list.contains(first - last)
+//     case order {
+//       Ascending if last > first && check -> True
+//       Descending if last < first && check -> True
+//       _ -> False
+//     }
+//   }
 
-  let evaluate_safety_inner = fn(line: List(Int), order: Order) -> Safety {
-    case line {
-      [first, last] -> evaluate_singular(first, last, order)
-      [first, second, ..rest] ->
-        case evaluate_singular(first, second, order) {
-          True -> evaluate_safety_inner([second, ..rest], order)
-          False -> Unsafe
-        }
-      _ -> Safe
-    }
-  }
+//   // let evaluate_safety_inner = fn(line: List(Int), order: Order) -> Safety {
+//   //   case line {
+//   //     [first, last] -> evaluate_singular(first, last, order)
+//   //     [first, second, ..rest] ->
+//   //       case evaluate_singular(first, second, order) {
+//   //         True -> evaluate_safety_inner([second, ..rest], order)
+//   //         False -> Unsafe
+//   //       }
+//   //     _ -> Safe
+//   //   }
+//   // }
 
-  case line {
-    [first, second, ..rest] if second > first ->
-      evaluate_safety_inner([second, ..rest], Ascending)
-    [first, second, ..rest] if second < first ->
-      evaluate_safety_inner([second, ..rest], Descending)
-    _ -> Safe
-  }
-}
+//   case line {
+//     [first, second, ..rest] if second > first ->
+//       evaluate_safety_inner([second, ..rest], Ascending)
+//     [first, second, ..rest] if second < first ->
+//       evaluate_safety_inner([second, ..rest], Descending)
+//     _ -> Safe
+//   }
+// }
 
 /// Returns the direction of the diffs either [`Ascending`] or [`Descending`]
 fn direction(diffs: List(Int)) -> Order {
