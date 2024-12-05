@@ -67,26 +67,26 @@ fn handle_contents(contents: String) -> Option(Int) {
     })
     |> io.debug
 
-  let result1 =
-    diffs
-    |> list.map(fn(line) {
-      let order = direction(line)
-      case order {
-        Ascending -> line
-        Descending -> list.map(line, fn(diff) { -diff })
-      }
-      |> list.map(fn(diff) { diff >= 0 })
-    })
-    |> io.debug
+  // let result1 =
+  diffs
+  |> list.map(fn(line) {
+    let order = direction(line)
+    case order {
+      Ascending -> line
+      Descending -> list.map(line, fn(diff) { -diff })
+    }
+    |> list.map(fn(diff) { diff >= 0 })
+  })
+  |> io.debug
 
-  let result2 =
-    diffs
-    |> list.map(fn(line) {
-      list.map(line, fn(element) {
-        list.contains(allowed, int.absolute_value(element))
-      })
+  // let result2 =
+  diffs
+  |> list.map(fn(line) {
+    list.map(line, fn(element) {
+      list.contains(allowed, int.absolute_value(element))
     })
-    |> io.debug
+  })
+  |> io.debug
 
   // list.zip(result1, result2)
   // |> list.map(fn(p) {
