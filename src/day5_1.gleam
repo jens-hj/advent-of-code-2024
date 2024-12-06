@@ -34,7 +34,10 @@ pub fn handle_contents(contents: String) -> util.AoC {
     contents
     |> string.trim
     |> string.split("\n\n")
-    |> list.map(fn(section) { section |> string.split("\n") })
+    |> list.map(fn(section) {
+      section
+      |> string.split("\n")
+    })
   // |> io.debug
 
   io.println("1.1. After split")
@@ -109,17 +112,20 @@ pub fn handle_contents(contents: String) -> util.AoC {
         let #(before, after) = window
 
         let assert Ok(check_after) =
-          number_counts |> list.find(fn(count) { count.number == before })
+          number_counts
+          |> list.find(fn(count) { count.number == before })
 
         let assert Ok(check_before) =
-          number_counts |> list.find(fn(count) { count.number == after })
+          number_counts
+          |> list.find(fn(count) { count.number == after })
 
         list.contains(check_before.before, before)
         && list.contains(check_after.after, after)
       })
     })
     |> list.map(fn(adheres_to_rules) {
-      adheres_to_rules |> list.all(util.identity)
+      adheres_to_rules
+      |> list.all(util.identity)
     })
     |> list.zip(updates)
     |> list.map(fn(tuple) {
@@ -133,7 +139,23 @@ pub fn handle_contents(contents: String) -> util.AoC {
 
   io.println("1.6. Result")
 
-  util.AoC(day1: Some(result |> util.sum), day2: None)
+  place_numbers([], number_counts)
+  util.AoC(
+    day1: Some(
+      result
+      |> util.sum,
+    ),
+    day2: None,
+  )
+}
+
+fn place_numbers(acc: List(Int), rest: List(Count)) {
+  case number_counts {
+    [first, ..rest] -> {
+      acc
+      |> insert_at()
+    }
+  }
 }
 
 fn get_middle_number(update: List(Int)) -> Int {

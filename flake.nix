@@ -14,7 +14,7 @@
       in with pkgs; {
         devShells.default = pkgs.mkShell rec {
           nativeBuildInputs = [ pkgs.pkg-config ];
-          buildInputs = [ pkgs.gleam ];
+          buildInputs = with pkgs; [ gleam erlang ];
           LD_LIBRARY_PATH = lib.makeLibraryPath buildInputs;
         };
       });
