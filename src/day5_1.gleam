@@ -139,7 +139,7 @@ pub fn handle_contents(contents: String) -> util.AoC {
 
   io.println("1.6. Result")
 
-  place_numbers([], number_counts)
+  // place_numbers([], number_counts)
   util.AoC(
     day1: Some(
       result
@@ -149,14 +149,14 @@ pub fn handle_contents(contents: String) -> util.AoC {
   )
 }
 
-fn place_numbers(acc: List(Int), rest: List(Count)) {
-  case number_counts {
-    [first, ..rest] -> {
-      acc
-      |> insert_at()
-    }
-  }
-}
+// fn place_numbers(acc: List(Int), l: List(Count)) {
+//   case l {
+//     [first, ..rest] -> {
+//       acc
+//       |> insert_at()
+//     }
+//   }
+// }
 
 fn get_middle_number(update: List(Int)) -> Int {
   let length = list.length(update)
