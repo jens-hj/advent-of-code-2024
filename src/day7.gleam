@@ -7,7 +7,7 @@ import gleam/option.{None, Some}
 import simplifile
 
 pub fn main() {
-  let path = "inputs/day7.test"
+  let path = "inputs/day7"
 
   let result = case simplifile.read(path) {
     Ok(contents) -> handle_contents(contents)
@@ -29,10 +29,14 @@ type Combinations {
   )
 }
 
+type Results {
+  Results(target: Int, candidates: List(Int))
+}
+
 const operators = [int.add, int.multiply]
 
 pub fn handle_contents(contents: String) -> AoC {
-  let tests =
+  let result =
     contents
     |> string.trim
     |> string.split("\n")
@@ -73,21 +77,78 @@ pub fn handle_contents(contents: String) -> AoC {
         |> int.add(-1)
       let op_seqs =
         op_count
-        |> list.combinations(operators, _)
+        |> util.combinations_with_repititions(operators, _)
+
+      // t.input
+      // |> io.debug
+      // op_count
+      // |> io.debug
+      // op_seqs
+      // |> list.map(fn(op_seq) {
+      //   op_seq
+      //   |> io.debug
+      // })
       Combinations(input: t.input, opseqs: op_seqs, output: t.output)
     })
+    // |> list.map(fn(c) { print_combinations(c) })
     |> list.map(fn(c) {
-      // dont window apply functions, fold with the function, so the previous result is carried to the next function
-      c.opseqs
-      |> list.map(fn(ops) {
-        ops
-        |> list.strict_zip(
-          c.input
-          |> list.window_by_2,
-        )
-      })
+      let assert [first, ..rest] = c.input
+      let candidates =
+        c.opseqs
+        |> list.map(fn(opseq) {
+          rest
+          |> list.index_fold(first, fn(acc, item, index) {
+            let assert Ok(op) =
+              opseq
+              |> util.get_index(index)
+            op(acc, item)
+          })
+        })
+      Results(target: c.output, candidates: candidates)
+    })
+    |> list.map(fn(results) {
+      case
+        results.candidates
+        |> list.contains(results.target)
+      {
+        True -> results.target
+        False -> 0
+      }
     })
     |> io.debug
 
-  util.AoC(day1: None, day2: None)
+  util.AoC(
+    day1: Some(
+      result
+      |> util.sum,
+    ),
+    day2: None,
+  )
 }
+// fn print_combinations(combinations: Combinations) -> Combinations {
+//   let inputs =
+//     combinations.input
+//     |> list.map(fn(i) {
+//       i
+//       |> int.to_string
+//     })
+//     |> string.join(" ")
+
+//   io.print("inputs = ")
+//   io.println(inputs)
+
+//   io.println("operators = ")
+//   combinations.opseqs
+//   |> list.map(fn(opseq) {
+//     opseq
+//     |> io.debug
+//   })
+
+//   io.print("target = ")
+//   io.println(
+//     combinations.output
+//     |> int.to_string,
+//   )
+
+//   combinations
+// }
