@@ -7,6 +7,7 @@ import simplifile
 import aoc.{type AoC, AoC}
 import util
 import coordinate.{type Coordinate, Bounds, Position}
+import grid
 
 pub fn main() {
   let path = "inputs/day8"
@@ -30,14 +31,8 @@ fn handle_contents(contents: String) -> AoC {
     })
 
   let bounds =
-    Bounds(
-      x: list.length(grid),
-      y: grid
-        |> fn(g) {
-          let assert Ok(first) = list.first(g)
-          list.length(first)
-        },
-    )
+    grid
+    |> grid.bounds
 
   let antenna_pairs =
     grid

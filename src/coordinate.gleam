@@ -8,15 +8,15 @@ pub type Coordinate {
   Distance(x: Int, y: Int)
 }
 
-pub fn cmp(a: Coordinate, b: Coordinate) -> Order {
-  order.break_tie(cmp_x(a, b), cmp_y(a, b))
+pub fn compare(a: Coordinate, b: Coordinate) -> Order {
+  order.break_tie(compare_x(a, b), compare_y(a, b))
 }
 
-pub fn cmp_x(a: Coordinate, b: Coordinate) -> Order {
+pub fn compare_x(a: Coordinate, b: Coordinate) -> Order {
   int.compare(a.x, b.x)
 }
 
-pub fn cmp_y(a: Coordinate, b: Coordinate) -> Order {
+pub fn compare_y(a: Coordinate, b: Coordinate) -> Order {
   int.compare(a.y, b.y)
 }
 
