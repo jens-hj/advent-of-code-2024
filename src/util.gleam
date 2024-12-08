@@ -1,33 +1,13 @@
 import gleam/io
 import gleam/list
-import gleam/option.{type Option}
 import gleam/string
-
-pub type AoC {
-  AoC(day1: Option(Int), day2: Option(Int))
-}
+import gleam/int
+import gleam/float
 
 pub fn get_index(l: List(a), i: Int) -> Result(a, Nil) {
   l
   |> list.take(i + 1)
   |> list.last
-}
-
-/// A grid of characters, that is each string is a single character
-pub type Grid =
-  List(List(String))
-
-pub fn print_grid(grid: Grid) -> Grid {
-  grid
-  |> list.map(fn(row) {
-    row
-    |> string.join("")
-    |> io.println
-  })
-
-  io.println("")
-
-  grid
 }
 
 pub fn sum(l: List(Int)) -> Int {
@@ -49,7 +29,9 @@ pub fn combinations_with_repititions(l: List(a), length: Int) -> List(List(a)) {
     l
     |> list.last
   list.range(0, length)
-  |> list.map(fn(amount) {
+  |> list.index_map(fn(amount, index) {
+    print_progress("Creating Combination", index, length + 1)
+
     [
       first
         |> list.repeat(amount),
@@ -61,4 +43,34 @@ pub fn combinations_with_repititions(l: List(a), length: Int) -> List(List(a)) {
     |> list.unique
   })
   |> list.flatten
+}
+
+pub fn print_progress(prefix: String, index: Int, total: Int) {
+  let assert Ok(progress) =
+    index
+    |> int.add(1)
+    |> int.to_float
+    |> float.divide(
+      total
+      |> int.to_float,
+    )
+  io.println(
+    [
+      prefix,
+      " ",
+      "test ",
+      index + 1
+        |> int.to_string,
+      "/",
+      total
+        |> int.to_string,
+      " ",
+      progress
+        |> float.multiply(100.0)
+        |> float.round
+        |> int.to_string,
+      "%",
+    ]
+    |> string.join(""),
+  )
 }

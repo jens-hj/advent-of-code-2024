@@ -5,16 +5,17 @@ import gleam/option.{None, Some}
 import gleam/string
 import simplifile
 import util
+import aoc.{type AoC, AoC}
 
 pub fn main() {
   let path = "inputs/day5.test"
 
   let result = case simplifile.read(path) {
     Ok(contents) -> handle_contents(contents)
-    Error(_reason) -> util.AoC(day1: None, day2: None)
+    Error(_reason) -> AoC(part1: None, part2: None)
   }
 
-  io.debug(result)
+  aoc.print(result)
 }
 
 pub type Rule {
@@ -29,7 +30,7 @@ pub type Update {
   List(Int)
 }
 
-pub fn handle_contents(contents: String) -> util.AoC {
+pub fn handle_contents(contents: String) -> AoC {
   let lines =
     contents
     |> string.trim
@@ -140,12 +141,12 @@ pub fn handle_contents(contents: String) -> util.AoC {
   io.println("1.6. Result")
 
   // place_numbers([], number_counts)
-  util.AoC(
-    day1: Some(
+  AoC(
+    part1: Some(
       result
       |> util.sum,
     ),
-    day2: None,
+    part2: None,
   )
 }
 

@@ -4,8 +4,8 @@ import gleam/option.{type Option, None, Some}
 import gleam/regexp
 import gleam/string
 import simplifile
-
-import util.{type Grid, get_index, print_grid}
+import grid.{type Grid}
+import util.{get_index}
 
 pub fn main() {
   let path = "inputs/day4.test"
@@ -35,16 +35,33 @@ pub fn handle_contents(contents: String) -> Option(Int) {
     contents
     |> string.trim
     |> string.split("\n")
-    |> list.map(fn(line) { line |> string.to_graphemes })
-    |> print_grid
+    |> list.map(fn(line) {
+      line
+      |> string.to_graphemes
+    })
+    |> grid.print(util.identity)
 
   let grid_permutations =
-    [grid, grid |> list.transpose, grid |> rotate45]
-    |> list.map(fn(g) { g |> print_grid })
+    [
+      grid,
+      grid
+        |> list.transpose,
+      grid
+        |> rotate45,
+    ]
+    |> list.map(fn(g) {
+      g
+      |> grid.print(util.identity)
+    })
 
   grid
   |> list.map(fn(row) {
-    regexp.scan(pattern, row |> string.join("")) |> list.length
+    regexp.scan(
+      pattern,
+      row
+        |> string.join(""),
+    )
+    |> list.length
   })
   |> io.debug
 
@@ -53,7 +70,12 @@ pub fn handle_contents(contents: String) -> Option(Int) {
     |> list.map(fn(g) {
       g
       |> list.map(fn(row) {
-        regexp.scan(pattern, row |> string.join("")) |> list.length
+        regexp.scan(
+          pattern,
+          row
+            |> string.join(""),
+        )
+        |> list.length
       })
       |> list.fold(0, fn(acc, x) { acc + x })
     })
@@ -63,11 +85,14 @@ pub fn handle_contents(contents: String) -> Option(Int) {
   Some(result)
 }
 
-pub fn rotate45(grid: Grid) -> Grid {
+pub fn rotate45(grid: Grid(a)) -> Grid(a) {
   let max = list.length(grid) - 1
   let first_half =
     list.range(0, max)
-    |> list.map(fn(i) { list.range(0, i) |> list.reverse })
+    |> list.map(fn(i) {
+      list.range(0, i)
+      |> list.reverse
+    })
     |> io.debug
 
   let assert Ok(second_half) =
@@ -84,7 +109,9 @@ pub fn rotate45(grid: Grid) -> Grid {
       })
     })
 
-  let combined = list.append(first_half, second_half) |> io.debug
+  let combined =
+    list.append(first_half, second_half)
+    |> io.debug
 
   let result =
     combined
@@ -101,7 +128,7 @@ pub fn rotate45(grid: Grid) -> Grid {
         item
       })
     })
-    |> print_grid
+  // |> print_grid(util.identity)
 
   result
 }
