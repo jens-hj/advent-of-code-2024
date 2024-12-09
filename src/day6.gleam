@@ -184,11 +184,6 @@ fn turn_right(direction: Direction) -> Direction {
   }
 }
 
-type OutsideOrInside {
-  Outside(Coordinate)
-  Inside(Coordinate)
-}
-
 fn get_next_obstacle(
   obstacles: List(Coordinate),
   position: Coordinate,
