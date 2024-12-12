@@ -3,6 +3,7 @@ import gleam/int
 import gleam/string
 
 pub type Coordinate {
+  Coordinate(x: Int, y: Int)
   Position(x: Int, y: Int)
   Bounds(x: Int, y: Int)
   Distance(x: Int, y: Int)
@@ -35,6 +36,10 @@ pub fn to_string(c: Coordinate) -> String {
 
 pub fn distance(a: Coordinate, b: Coordinate) -> Coordinate {
   Distance(x: a.x - b.x, y: a.y - b.y)
+}
+
+pub fn manhattan_distance(a: Coordinate, b: Coordinate) -> Int {
+  int.add(int.absolute_value(a.x - b.x), int.absolute_value(a.y - b.y))
 }
 
 pub fn apply_op(
